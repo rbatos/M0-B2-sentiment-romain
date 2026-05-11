@@ -1,0 +1,50 @@
+# Environnements virtuels
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / config locale
+.env
+.env.*
+!.env.example
+
+# Logs (générés à l'exécution par Loguru)
+logs/
+*.log
+
+# Build / distribution
+build/
+dist/
+*.egg-info/
+
+# Artefacts générés par les scripts
+scripts/liens_status.json
+
+# ⚠️ Fichiers VOLONTAIREMENT COMMITTÉS bien que potentiellement lourds :
+#   - briefs/*/squelette/data/*.csv  (datasets toy < 1 Mo)
+#   - briefs/*/squelette/model/*.joblib (modèles pré-entraînés compressés ~6-10 Mo)
+#   - briefs/*/ressources/legacy/*.docx (docs OPCO ATLAS héritées)
