@@ -117,18 +117,31 @@ trier selon :
 
 ## Exemple minimal qui tourne (lecture)
 
-Voici 5 mini-cas. Pour chacun, identifie la **famille IA pertinente** (avant de lire
-la réponse).
+Voici 5 mini-cas. Pour chacun, **identifie la famille IA pertinente** — note ta
+réponse sur un brouillon **avant** d'ouvrir le corrigé.
 
-| # | Cas | Famille IA |
-|---|---|---|
-| 1 | Une banque veut prédire si un client va rembourser un crédit | **Classification supervisée** — Random Forest, Gradient Boosting |
-| 2 | Une usine veut détecter les pièces défectueuses sur des photos de la chaîne | **Vision + transfer learning** — CNN pré-entraîné (ResNet) + fine-tuning |
-| 3 | Une entreprise veut que ses employés puissent poser des questions sur les RH internes | **RAG** — vectorisation des docs RH + LLM (open source ou API) |
-| 4 | Une mutuelle veut prévoir le coût total des sinistres du mois prochain | **Régression supervisée** — séries temporelles / Gradient Boosting |
-| 5 | Un opérateur télécom veut segmenter ses 5M de clients pour le marketing | **Clustering** (non supervisé) — K-means, GMM |
+| # | Cas |
+|---|---|
+| 1 | Une banque veut prédire si un client va rembourser un crédit |
+| 2 | Une usine veut détecter les pièces défectueuses sur des photos de la chaîne |
+| 3 | Une entreprise veut que ses employés puissent poser des questions sur les RH internes |
+| 4 | Une mutuelle veut prévoir le coût total des sinistres du mois prochain |
+| 5 | Un opérateur télécom veut segmenter ses 5M de clients pour le marketing |
+
+<details>
+<summary>🔒 <strong>Corrigé</strong> — clique pour révéler (après avoir réfléchi aux 5 cas)</summary>
+
+| # | Famille IA |
+|---|---|
+| 1 | **Classification supervisée** — Random Forest, Gradient Boosting |
+| 2 | **Vision + transfer learning** — CNN pré-entraîné (ResNet) + fine-tuning |
+| 3 | **RAG** — vectorisation des docs RH + LLM (open source ou API) |
+| 4 | **Régression supervisée** — séries temporelles / Gradient Boosting |
+| 5 | **Clustering** (non supervisé) — K-means, GMM |
 
 Aucune de ces 5 réponses n'est un LLM seul. Et c'est normal.
+
+</details>
 
 ## Exercice guidé
 

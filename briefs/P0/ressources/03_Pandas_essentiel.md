@@ -98,7 +98,8 @@ df = pd.read_csv(URL)
    **proportion** de pingouins « larges » par espèce ?
 6. Produis un graphique simple : un barchart de la masse moyenne par espèce.
 
-### Solutions
+<details>
+<summary>🔒 <strong>Solution</strong> — clique pour révéler (après avoir cherché)</summary>
 
 ```python
 # Q1
@@ -122,6 +123,8 @@ print(df.groupby("species")["is_large"].mean().round(3))
 # Q6
 df.groupby("species")["body_mass_g"].mean().plot.bar(title="Masse moyenne par espèce — Palmer Penguins")
 ```
+
+</details>
 
 ## Pour aller plus loin
 

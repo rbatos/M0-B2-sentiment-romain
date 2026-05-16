@@ -67,7 +67,9 @@ cohérentes.
 
 ## Exercice guidé
 
-Ouvre un notebook, fais ces 4 questions à la suite. Les solutions sont en fin de fichier.
+Ouvre un notebook, fais ces 4 questions à la suite. **Cherche par toi-même
+d'abord** — la solution est masquée plus bas, à révéler seulement après ta
+tentative.
 
 1. Crée un tableau `temperatures` de 30 valeurs simulées (entre 15 et 30 °C) avec un
    `random.default_rng(seed=42)`. Calcule la **moyenne**, la **médiane** et l'**écart-type**.
@@ -77,7 +79,8 @@ Ouvre un notebook, fais ces 4 questions à la suite. Les solutions sont en fin d
 4. Construis une matrice 5×6 d'entiers aléatoires entre 0 et 100, et extrait la
    **colonne 3** puis les **lignes paires**.
 
-### Solutions (à révéler à la fin)
+<details>
+<summary>🔒 <strong>Solution</strong> — clique pour révéler (après avoir cherché)</summary>
 
 ```python
 import numpy as np
@@ -100,6 +103,8 @@ mat = rng.integers(0, 100, size=(5, 6))
 print(mat[:, 3])          # colonne 3
 print(mat[::2, :])        # lignes paires
 ```
+
+</details>
 
 ## Pour aller plus loin
 
