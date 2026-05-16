@@ -44,9 +44,7 @@ Dernière vérification : **2026-05-10** (toutes les URLs répondent en HTTP 200
 
 ## Vidéos
 
-- *(Aucune vidéo imposée pour P0. Les notebooks ZTM fournis en complément par
-  la formatrice ont des vidéos associées que les apprenants peuvent consulter
-  de leur propre chef.)*
+- *(Aucune vidéo imposée pour P0)*
 
 ## Repositories de référence
 
