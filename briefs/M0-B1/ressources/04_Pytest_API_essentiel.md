@@ -105,6 +105,43 @@ s'exécute pas, et `model_loaded` serait `False`.
 Tu as déjà 2 tests pour `/health` dans `tests/test_health.py` (livrés au clone).
 **Ajoute 3 tests pour `/predict`** dans un nouveau fichier `tests/test_predict.py`.
 
+**Cherche par toi-même** en t'appuyant sur la section *Concepts clés* et l'exemple
+*Avec FastAPI TestClient* ci-dessus. La solution est masquée plus bas — à révéler
+seulement après ta tentative.
+
+**À écrire :**
+
+1. Une **fixture `client`** de scope `module` qui ouvre un `TestClient(app)` avec
+   `with` (pour déclencher le `lifespan`).
+2. **Test cas valide** : POST `/predict` avec un payload `compresseur` complet,
+   attendu `200` + `body["criticite"] in {"basse","moyenne","haute"}` +
+   somme des `probabilites.values()` ≈ 1.
+3. **Test cas invalide** : POST avec `type_machine: "INCONNU"`, attendu `422`
+   (validation Pydantic).
+4. **Test paramétré** : `@pytest.mark.parametrize` sur 4 types
+   (`pompe`, `convoyeur`, `presse`, `four`), chaque cas doit renvoyer `200`.
+
+**Payload de référence** (à adapter selon les tests) :
+```json
+{
+  "type_machine": "compresseur",
+  "age_machine_jours": 1500,
+  "derniere_maintenance_jours": 45,
+  "temperature_moyenne": 68.5,
+  "vibration_moyenne": 3.2,
+  "pression_moyenne": 7.8,
+  "nb_incidents_3_mois": 2
+}
+```
+
+✅ **Résultat attendu** :
+- `pytest -v` affiche **6 tests** (2 sur `/health` + 4 sur `/predict`),
+  tous PASSED.
+- Le test paramétré exécute 4 cas (un par type de machine).
+
+<details>
+<summary>🔒 <strong>Solution</strong> — clique pour révéler (après avoir cherché)</summary>
+
 ```python
 # tests/test_predict.py
 import pytest
@@ -172,10 +209,7 @@ def test_predict_tous_types_machine(client, type_m):
     assert r.json()["criticite"] in {"basse", "moyenne", "haute"}
 ```
 
-✅ **Solution attendue** :
-- `pytest -v` doit afficher **6 tests** (2 sur `/health` + 4 sur `/predict`),
-  tous PASSED.
-- Le test paramétré exécute 4 cas (un par type de machine).
+</details>
 
 ⭐ **Bonus 1** : ajoute un test qui vérifie que la **somme des probabilités est
 exactement 1.0** à `1e-9` près (montre que tu comprends `predict_proba`).

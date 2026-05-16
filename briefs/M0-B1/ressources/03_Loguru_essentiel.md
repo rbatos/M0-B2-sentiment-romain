@@ -93,49 +93,63 @@ Lance le script. Tu vois :
 Sur le squelette **M0-B1**, ajoute le logging Loguru à l'endpoint `/predict` que
 tu as implémenté dans le mini-cours FastAPI.
 
+**Cherche par toi-même** en t'appuyant sur les *Concepts clés* et l'*Exemple
+minimal* (étapes 1-2 du script ci-dessus). La solution est masquée plus bas — à
+révéler seulement après ta tentative.
+
 **Tâches :**
 
-1. Dans `app/main.py`, en début de fichier, configurer un sink fichier :
-   ```python
-   from pathlib import Path
-   from loguru import logger
-
-   LOG_DIR = Path("logs")
-   LOG_DIR.mkdir(exist_ok=True)
-   logger.add(
-       LOG_DIR / "api.log",
-       rotation="5 MB",
-       retention="7 days",
-       compression="zip",
-       level="INFO",
-       enqueue=True,            # safe pour les contextes async / multi-thread
-   )
-   ```
-
-2. Logger **avant** la prédiction :
-   ```python
-   logger.info(f"Requête /predict reçue : {item.model_dump()}")
-   ```
-
-3. Logger **après** la prédiction (avec la durée) :
-   ```python
-   import time
-   t0 = time.perf_counter()
-   # ... appel modèle ...
-   duree_ms = (time.perf_counter() - t0) * 1000
-   logger.info(f"Prédiction = {classe} (durée {duree_ms:.1f} ms)")
-   ```
-
+1. Dans `app/main.py`, en début de fichier, configurer un **sink fichier**
+   pointant vers `logs/api.log` avec rotation `"5 MB"`, retention `"7 days"`,
+   compression `"zip"`, niveau `INFO`, et `enqueue=True` (safe pour contextes
+   async / multi-thread). Penser à créer le dossier `logs/` via `pathlib`.
+2. Logger en `INFO` **avant** la prédiction (avec le payload reçu via
+   `item.model_dump()`).
+3. Logger en `INFO` **après** la prédiction, avec **la durée mesurée**
+   (`time.perf_counter()` avant/après l'appel modèle, conversion en ms).
 4. Ajouter `logs/` à `.gitignore` (si pas déjà fait).
-
 5. Lancer 5 requêtes à `/predict` (Swagger ou curl) et vérifier que
    `logs/api.log` se remplit.
 
-✅ **Solution attendue** :
+✅ **Résultat attendu** :
 - console colorée pendant le run d'uvicorn ;
 - fichier `logs/api.log` avec une ligne INFO par requête ;
 - pas de log de niveau DEBUG (sauf si tu as changé le niveau) ;
 - les durées de prédiction visibles.
+
+<details>
+<summary>🔒 <strong>Solution</strong> — clique pour révéler (après avoir cherché)</summary>
+
+```python
+# en début de app/main.py
+from pathlib import Path
+from loguru import logger
+
+LOG_DIR = Path("logs")
+LOG_DIR.mkdir(exist_ok=True)
+logger.add(
+    LOG_DIR / "api.log",
+    rotation="5 MB",
+    retention="7 days",
+    compression="zip",
+    level="INFO",
+    enqueue=True,            # safe pour les contextes async / multi-thread
+)
+```
+
+```python
+# dans la route /predict
+import time
+
+logger.info(f"Requête /predict reçue : {item.model_dump()}")
+
+t0 = time.perf_counter()
+# ... appel modèle ...
+duree_ms = (time.perf_counter() - t0) * 1000
+logger.info(f"Prédiction = {classe} (durée {duree_ms:.1f} ms)")
+```
+
+</details>
 
 ⭐ **Bonus** : utiliser un format JSON pour les logs fichier (utile en M5 si tu
 ingères les logs dans Grafana Loki). Indice : Loguru accepte une fonction

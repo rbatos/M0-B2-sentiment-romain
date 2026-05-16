@@ -42,6 +42,22 @@ MLOps). C'est aussi ce que demande explicitement le sujet certif janvier 2026.
 - **`uvicorn`** : le serveur ASGI qui exécute l'application. En dev : `uvicorn
   app.main:app --reload` ; en prod : sans `--reload`, derrière un reverse proxy.
 
+### Rappel scikit-learn (pour intégrer un modèle déjà entraîné)
+
+Quand un modèle scikit-learn est chargé via `joblib.load(...)`, tu as 3 méthodes
+utiles pour le servir derrière une API :
+
+- **`model.predict(X)`** → renvoie un tableau de **classes prédites** (la plus
+  probable pour chaque ligne de `X`). Ex : `array(['haute'])`.
+- **`model.predict_proba(X)`** → renvoie une **matrice de probabilités**, une
+  ligne par exemple, une colonne par classe. Ex : `array([[0.1, 0.2, 0.7]])`.
+- **`model.classes_`** → l'**ordre des classes** correspondant aux colonnes de
+  `predict_proba`. Ex : `array(['basse', 'moyenne', 'haute'])`.
+
+L'entrée `X` doit être un **DataFrame pandas** (ou array 2D) avec les mêmes
+colonnes que celles vues à l'entraînement. Pour un seul exemple :
+`pd.DataFrame([item.model_dump()])`.
+
 ## Exemple minimal qui tourne
 
 ```python
@@ -104,7 +120,28 @@ peux tester `/health`, `POST /notes`, `GET /notes/0` directement.
 Tu es sur le squelette **M0-B1**. L'endpoint `/predict` renvoie actuellement une
 erreur 501. **Implémente-le.**
 
-Code à compléter dans `app/main.py` :
+**Cherche par toi-même** en t'appuyant sur la section *Concepts clés* (en
+particulier le **rappel scikit-learn** ci-dessus) et l'*Exemple minimal*. La
+solution est masquée plus bas — à révéler seulement après ta tentative.
+
+**Étapes attendues dans `app/main.py`** :
+
+1. Récupérer le modèle depuis `state` (lever `HTTPException(503)` si absent).
+2. Construire un **DataFrame pandas** à partir de l'item Pydantic
+   (`item.model_dump()`).
+3. Appeler `.predict()` et `.predict_proba()` sur le modèle (cf. *Rappel
+   scikit-learn*).
+4. Construire un `dict {classe: proba}` en zippant `model.classes_` et les
+   probabilités.
+5. Logger l'événement (`loguru.logger.info`).
+6. Retourner une réponse typée `PredictionResponse(criticite=..., probabilites=...)`.
+
+✅ **Résultat attendu** : un POST `/predict` avec un payload JSON valide doit
+retourner `200` + `{"criticite": "...", "probabilites": {...}}`. Un payload
+invalide doit retourner `422`.
+
+<details>
+<summary>🔒 <strong>Solution</strong> — clique pour révéler (après avoir cherché)</summary>
 
 ```python
 import pandas as pd
@@ -136,9 +173,7 @@ def predict(item: MachineInput) -> PredictionResponse:
     return PredictionResponse(criticite=classe, probabilites=proba_dict)
 ```
 
-✅ **Solution attendue** : un POST `/predict` avec un payload JSON valide doit
-retourner 200 + `{"criticite": "...", "probabilites": {...}}`. Un payload invalide
-doit retourner 422.
+</details>
 
 Test depuis ton terminal :
 
