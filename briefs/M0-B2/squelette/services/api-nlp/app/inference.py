@@ -24,11 +24,14 @@ from app.schemas import Sentiment, SentimentOut
 def map_stars_to_sentiment(star_label: str) -> Sentiment:
     """Mappe un label 5 étoiles ('1 star', ..., '5 stars') en 3 classes métier.
 
-    À compléter par l'apprenant. Convention attendue (à justifier dans
-    le README perso async) :
-        1-2 stars -> 'négatif'
-        3 stars   -> 'neutre'
-        4-5 stars -> 'positif'
+    À compléter par l'apprenant. **Le choix du mapping est un arbitrage
+    métier**, pas une recette imposée : plusieurs découpages sont valides
+    (cf. mini-cours `02_HuggingFace_Transformers_essentiel.md`, section
+    "Justification du seuil de mapping").
+
+    Ton travail : proposer **ton** mapping et **le justifier** dans le
+    README perso async (coût d'un faux positif / faux négatif côté
+    métier Aubergine Hôtels).
 
     Args:
         star_label: label produit par le modèle (ex: '4 stars').
@@ -39,8 +42,8 @@ def map_stars_to_sentiment(star_label: str) -> Sentiment:
     Raises:
         ValueError: si `star_label` n'est pas dans le format attendu.
     """
-    # TODO Tâche 3 — compléter ce mapping et justifier le seuil retenu
-    # en commentaire (1-2 → négatif, 3 → neutre, 4-5 → positif par défaut).
+    # TODO Tâche 3 — implémenter le mapping de ton choix et documenter
+    # le raisonnement métier dans le README perso async.
     raise NotImplementedError("Compléter `map_stars_to_sentiment` (Tâche 3).")
 
 
