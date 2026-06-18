@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: 57d4cff8-4a2e-4ba0-8c70-a4a230631059
+
+localResources:
+  collections:
+    - ..\briefs\M0-B2\squelette\postman\M0-B2_collection.json

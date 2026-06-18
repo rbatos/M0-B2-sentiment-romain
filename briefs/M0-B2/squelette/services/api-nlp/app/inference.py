@@ -42,9 +42,12 @@ def map_stars_to_sentiment(star_label: str) -> Sentiment:
     Raises:
         ValueError: si `star_label` n'est pas dans le format attendu.
     """
-    # TODO Tâche 3 — implémenter le mapping de ton choix et documenter
-    # le raisonnement métier dans le README perso async.
-    raise NotImplementedError("Compléter `map_stars_to_sentiment` (Tâche 3).")
+    nb = int(star_label[0])  # '4 stars' → 4
+    if nb <= 2:
+        return "négatif"
+    if nb == 3:
+        return "neutre"
+    return "positif"
 
 
 def predict_sentiment(pipeline: Any, text: str, model_name: str) -> SentimentOut:
@@ -62,11 +65,25 @@ def predict_sentiment(pipeline: Any, text: str, model_name: str) -> SentimentOut
     # TODO Tâche 3 — compléter :
     #
     # 1. Mesurer le temps d'inférence (time.perf_counter() avant/après).
+    t0 = time.perf_counter()
     # 2. Appeler `pipeline(text, top_k=None)` pour récupérer toutes les
     #    probabilités (5 entrées, une par étoile).
+    result = pipeline(text, top_k=None)
+    #print(f"DEBUG result 2 type: {type(result)}, value: {result}", flush=True)
+    # => 
+    latence = (time.perf_counter() - t0) * 1000
     # 3. Construire `scores_5_stars: dict[str, float]` à partir du résultat.
+    scores_5_stars = {item["label"]: item["score"] for item in result} #result[0]  # [{'label': '1 star', 'score': 0.04}, ..., {'label': '5 stars', 'score': 0.36}]
+    #print(f"DEBUG scores_5_stars type: {type(scores_5_stars[0])}, value: {scores_5_stars[0]}", flush=True)
     # 4. Identifier le label argmax (la plus haute proba).
+    argmax = max(result, key=lambda x: x["score"])["label"]
     # 5. Appeler `map_stars_to_sentiment(label_argmax)` pour obtenir la
     #    classe métier.
+    sentiment = map_stars_to_sentiment(argmax)
     # 6. Renvoyer un `SentimentOut(...)`.
-    raise NotImplementedError("Compléter `predict_sentiment` (Tâche 3).")
+    return SentimentOut(
+        sentiment=sentiment,
+        scores_5_stars=scores_5_stars,
+        model_name=model_name,
+        latence_ms=latence
+    )
